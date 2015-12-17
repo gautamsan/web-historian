@@ -37,14 +37,13 @@ exports.readListOfUrls = function(callback){
 
 exports.isUrlInList = function(url, callback){
   exports.readListOfUrls(function(urls) {
-    urls.forEach(function(val) {
-      if(val === url) {
+    for(var i = 0; i < urls.length; i++) {
+      if(urls[i] === url) {
         callback(true);
-      } else {
-        callback(false);
       }
-    })
-  })
+    }
+    callback(false);
+  });
 };
 
 exports.addUrlToList = function(url, callback){
@@ -52,15 +51,25 @@ exports.addUrlToList = function(url, callback){
     if(err){
       throw err
     }
-    //callback('works');
-  })
+    callback('works');
+  });
 };
 
-exports.isUrlArchived = function(callback){
-  
+exports.isUrlArchived = function(url, callback){
+  fs.readdir(exports.paths.archivedSites, function(err, data) {
+    if(err) {
+      throw err;
+    }
+    for(var i = 0; i < data.length; i++) {
+      if(url === data[i]) {
+        callback(true);
+      }
+    }
+    callback(false);
+  })
 };
 
 exports.downloadUrls = function(callback){
 };
 
-exports.addUrlToList("www.allan.com");
+
