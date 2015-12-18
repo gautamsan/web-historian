@@ -17,7 +17,13 @@ exports.serveAssets = function(res, asset, statusCode) {
   // css, or anything that doesn't change often.)
   fs.readFile(asset, 'utf-8', function(err, data) {
     if(err) {}
-    res.writeHead(statusCode, exports.headers);
+    if(statusCode === 302) {
+      var redirect = "http://www.google.com"
+      res.writeHead(statusCode, "{location: "+redirect+"}");
+    } else {
+      res.writeHead(statusCode, exports.headers);
+    }
+    
     res.end(data);
   })
 };
